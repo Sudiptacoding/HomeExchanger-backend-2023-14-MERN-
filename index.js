@@ -32,7 +32,7 @@ const verify = async (req, res, next) => {
     if (!token) {
         return res.status(401).send({ message: "unAuthorize access" })
     }
-    jwt.verify(token, 'secret', function (err, decoded) {
+    jwt.verify(token, process.env.SEQUIRITY, function (err, decoded) {
         if (err) {
             return res.status(401).send({ message: "unAuthorize access" })
         }
@@ -43,12 +43,12 @@ const verify = async (req, res, next) => {
 
 app.post('/jwt', (req, res) => {
     try {
-        const token = jwt.sign(req.body, 'secret', { expiresIn: '1h' });
+        const token = jwt.sign(req.body, process.env.SEQUIRITY, { expiresIn: '1h' });
         res
             .cookie('token', token, {
                 httpOnly: true,
-                secure: true,
-                sameSite: 'none',
+                secure: false,
+                sameSite: false,
             })
             .send(token)
     } catch (error) {
