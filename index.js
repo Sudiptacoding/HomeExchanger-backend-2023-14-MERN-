@@ -57,7 +57,6 @@ app.post('/jwt', (req, res) => {
     }
 })
 
-
 app.get('/cookedelet', (req, res) => {
     res.clearCookie('token', { maxAge: 0 }).send({ sucess: true })
 })
