@@ -11,8 +11,8 @@ app.use(cors({
     origin: [
         'https://messanger-6f9a5.web.app',
         'https://messanger-6f9a5.firebaseapp.com',
+        'http://localhost:5173'
     ],
-
     credentials: true
 }))
 app.use(express.json())
@@ -51,8 +51,8 @@ app.post('/jwt', (req, res) => {
         res
             .cookie('token', token, {
                 httpOnly: true,
-                secure: true,
-                sameSite: false,
+                secure: process.env.NODE_ENV === 'production',
+                sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
             })
             .send(token)
     } catch (error) {
@@ -61,8 +61,12 @@ app.post('/jwt', (req, res) => {
 })
 
 app.get('/cookedelet', (req, res) => {
-    // res.clearCookie('token', { maxAge: 0 }).send({ sucess: true })
-    console.log('no added')
+    res.clearCookie('token', {
+        maxAge: 0,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
+    }).send({ sucess: true })
+    res.send({ sucess: true })
 })
 async function run() {
     try {
@@ -192,8 +196,8 @@ async function run() {
             res.send(result)
         })
 
-        await client.connect();
-        await client.db("admin").command({ ping: 1 });
+        // await client.connect();
+        // await client.db("admin").command({ ping: 1 });
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
     } finally {
     }
