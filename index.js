@@ -8,7 +8,7 @@ const app = express()
 
 app.use(cookieParser())
 app.use(cors({
-    origin: ['http://localhost:5173'],
+    origin: ['https://messanger-6f9a5.web.app', 'https://messanger-6f9a5.firebaseapp.com'],
     credentials: true
 }))
 app.use(express.json())
@@ -197,7 +197,7 @@ run().catch(console.dir);
 
 
 
-app.get('/', verify, (req, res) => {
+app.get('/', (req, res) => {
     res.send('Hello World!')
 })
 
