@@ -17,9 +17,7 @@ const port = process.env.PORT || 3000
 
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
-
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.sm8afkk.mongodb.net/?retryWrites=true&w=majority`
-
 const client = new MongoClient(uri, {
     serverApi: {
         version: ServerApiVersion.v1,
@@ -44,9 +42,6 @@ const verify = async (req, res, next) => {
 
 }
 
-// start
-// Create jwt from sent email in the fontedn side req.body
-
 app.post('/jwt', (req, res) => {
     try {
         const token = jwt.sign(req.body, 'secret', { expiresIn: '1h' });
@@ -68,8 +63,6 @@ app.get('/cookedelet', (req, res) => {
 })
 
 
-
-
 async function run() {
     try {
         const database = client.db("assignment11");
@@ -77,13 +70,13 @@ async function run() {
         const bookService = database.collection("bookinglist");
 
         // add services
-        app.post('/addservice', async (req, res) => {
+        app.post('/addservice', verify, async (req, res) => {
             const result = await allServices.insertOne(req.body);
             res.send(result)
         })
 
         // book services
-        app.post('/booking', async (req, res) => {
+        app.post('/booking', verify, async (req, res) => {
             const result = await bookService.insertOne(req.body);
             res.send(result)
         })
@@ -106,13 +99,11 @@ async function run() {
             res.send(result)
         })
 
-
         // all service for search
         app.get('/allservicesSearch', async (req, res) => {
             const result = await allServices.find().toArray();
             res.send(result)
         })
-
 
         // my bookings
         app.get('/mybookings', verify, async (req, res) => {
@@ -142,7 +133,6 @@ async function run() {
             res.send(result)
         })
 
-
         //  single item delete
         app.delete('/singleservicesdelete/:id', verify, async (req, res) => {
             const result = await allServices.deleteOne({ _id: new ObjectId(req.params.id) });
@@ -170,20 +160,23 @@ async function run() {
             res.send(result)
         })
 
-
         //  single service details
         app.get('/servicesdetails/:id', verify, async (req, res) => {
             const result = await allServices.findOne({ _id: new ObjectId(req.params.id) })
             res.send(result)
         })
 
+        //  single service details
+        app.get('/allsimilerservices', async (req, res) => {
+            const result = await allServices.find({ userEmail: req.query.email }).toArray();
+            res.send(result)
+        })
 
         //  painding work
         app.get('/paindingwork', verify, async (req, res) => {
             const result = await bookService.find({ userEmail: req.query.email }).toArray()
             res.send(result)
         })
-
 
         // upded product
         app.post('/updedservice/:id', verify, async (req, res) => {
