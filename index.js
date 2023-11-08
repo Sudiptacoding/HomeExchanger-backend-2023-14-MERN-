@@ -62,7 +62,6 @@ app.get('/cookedelet', (req, res) => {
     res.clearCookie('token', { maxAge: 0 }).send({ sucess: true })
 })
 
-
 async function run() {
     try {
         const database = client.db("assignment11");
