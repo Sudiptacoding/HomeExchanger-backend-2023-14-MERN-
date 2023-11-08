@@ -173,7 +173,6 @@ async function run() {
             const result = await bookService.find({ userEmail: req.query.email }).toArray()
             res.send(result)
         })
-
         // upded product
         app.post('/updedservice/:id', verify, async (req, res) => {
             const body = req.body;
