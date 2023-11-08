@@ -8,7 +8,11 @@ const app = express()
 
 app.use(cookieParser())
 app.use(cors({
-    origin: ['https://messanger-6f9a5.web.app', 'https://messanger-6f9a5.firebaseapp.com'],
+    origin: [
+        'https://messanger-6f9a5.web.app',
+        'https://messanger-6f9a5.firebaseapp.com',
+    ],
+
     credentials: true
 }))
 app.use(express.json())
