@@ -47,8 +47,8 @@ app.post('/jwt', (req, res) => {
         res
             .cookie('token', token, {
                 httpOnly: true,
-                secure: false,
-                sameSite: false,
+                secure: true,
+                sameSite: 'none',
             })
             .send(token)
     } catch (error) {
