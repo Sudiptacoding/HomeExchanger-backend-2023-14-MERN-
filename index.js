@@ -8,9 +8,12 @@ const app = express()
 app.use(cookieParser())
 app.use(cors({
     origin: [
-        'https://messanger-6f9a5.web.app',
-        'https://messanger-6f9a5.firebaseapp.com',
-        'http://localhost:5173'
+        // 'https://messanger-6f9a5.web.app',
+        // 'https://messanger-6f9a5.firebaseapp.com',
+        // 'http://localhost:5173',
+        // 'https://practic-project-501b7.web.app'
+        'https://volentear-8e15a.web.app',
+        'https://volentear-8e15a.firebaseapp.com'
     ],
     credentials: true
 }))
@@ -44,34 +47,50 @@ const verify = async (req, res, next) => {
     });
 }
 
-app.post('/jwt', (req, res) => {
-    try {
-        const token = jwt.sign(req.body, process.env.SEQUIRITY, { expiresIn: '1h' });
-        res
-            .cookie('token', token, {
-                httpOnly: true,
-                secure: process.env.NODE_ENV === 'production',
-                sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
-            })
-            .send(token)
-    } catch (error) {
-        console.log(error)
-    }
-})
-
-app.get('/cookedelet', (req, res) => {
-    res.clearCookie('token', {
-        maxAge: 0,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
-    }).send({ sucess: true })
-    res.send({ sucess: true })
-})
 async function run() {
     try {
+
+
+
+
+
         const database = client.db("assignment11");
         const allServices = database.collection("allservices");
         const bookService = database.collection("bookinglist");
+
+
+
+        app.post('/jwt', (req, res) => {
+            try {
+                const token = jwt.sign(req.body, process.env.SEQUIRITY, { expiresIn: '1h' });
+                res
+                    .cookie('token', token, {
+                        httpOnly: true,
+                        secure: process.env.NODE_ENV === 'production',
+                        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
+                    })
+                    .send(token)
+            } catch (error) {
+                console.log(error)
+            }
+        })
+
+        app.get('/cookedelet', (req, res) => {
+            res.clearCookie('token', {
+                maxAge: 0,
+                secure: process.env.NODE_ENV === 'production',
+                sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
+            }).send({ sucess: true })
+            res.send({ sucess: true })
+        })
+
+
+
+
+
+
+
+
 
         // add services
         app.post('/addservice', verify, async (req, res) => {
