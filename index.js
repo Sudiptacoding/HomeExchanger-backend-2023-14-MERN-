@@ -10,10 +10,12 @@ app.use(cors({
     origin: [
         // 'https://messanger-6f9a5.web.app',
         // 'https://messanger-6f9a5.firebaseapp.com',
-        // 'http://localhost:5173',
+        'http://localhost:5173',
         // 'https://practic-project-501b7.web.app'
         'https://volentear-8e15a.web.app',
-        'https://volentear-8e15a.firebaseapp.com'
+        'https://volentear-8e15a.firebaseapp.com',
+        'https://home-exchanger-fontend-2023-14-mern.vercel.app'
+        
     ],
     credentials: true
 }))
@@ -23,7 +25,10 @@ const port = process.env.PORT || 3000
 
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
-const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.sm8afkk.mongodb.net/?retryWrites=true&w=majority`
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.rllec.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`
+
+
+
 const client = new MongoClient(uri, {
     serverApi: {
         version: ServerApiVersion.v1,
@@ -93,7 +98,7 @@ async function run() {
 
 
         // add services
-        app.post('/addservice', verify, async (req, res) => {
+        app.post('/addservice', async (req, res) => {
             const result = await allServices.insertOne(req.body);
             res.send(result)
         })
